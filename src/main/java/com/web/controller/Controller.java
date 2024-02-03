@@ -4,8 +4,17 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.web.Crawler.WebCrawler;
+
 @RestController
 public class Controller {
+	
+	private final WebCrawler webCrawler;
+	
+	public Controller(WebCrawler webCrawler) {
+		this.webCrawler = webCrawler;
+	}
+	
 	
 	@GetMapping("/grouptest")
 	public String test(@RequestParam String test) {
@@ -18,6 +27,12 @@ public class Controller {
 		System.out.println("변경");
 		return test;
 	}
+	
+	@GetMapping("/crawl")
+	public void crawl() {
+		webCrawler.crawl();
+	}
+	
 
 
 }
