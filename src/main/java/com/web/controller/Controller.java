@@ -11,6 +11,7 @@ public class Controller {
 	public String test(@RequestParam String test) {
 		System.out.println("바qasdasd");
 		System.out.println(test);
+		System.out.println("woo Test");
 		return test;
 	}
 
