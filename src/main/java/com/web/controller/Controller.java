@@ -15,6 +15,7 @@ public class Controller {
 		System.out.println("택승");
 		System.out.println("다시해봅시다");
 		System.out.println("다시해봅시다ㅇㅇㅇㅇ");
+		System.out.println("변경");
 		return test;
 	}
 
