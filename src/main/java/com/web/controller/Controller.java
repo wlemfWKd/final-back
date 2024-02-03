@@ -9,7 +9,7 @@ public class Controller {
 	
 	@GetMapping("/grouptest")
 	public String test(@RequestParam String test) {
-		
+		System.out.println("바");
 		System.out.println(test);
 		return test;
 	}
