@@ -28,10 +28,10 @@ public class Controller {
 		return test;
 	}
 	
-	@GetMapping("/crawl")
-	public void crawl() {
-		webCrawler.crawl();
-	}
+//	@GetMapping("/crawl")
+//	public void crawl() {
+//		webCrawler.crawl();
+//	}
 	
 
 
