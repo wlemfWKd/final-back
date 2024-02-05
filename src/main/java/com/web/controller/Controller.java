@@ -27,6 +27,7 @@ public class Controller {
 		System.out.println("변경");
 		System.out.println("변경dsklfjweiotghjweiogjseiohg");
 		System.out.println("진짜로 성공");
+		System.out.println("애리미 등장 0_<");
 		return test;
 	}
 	
