@@ -4,14 +4,14 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.web.Crawler.WebCrawler;
+import com.web.Crawler.SupportCrawler;
 
 @RestController
 public class Controller {
 	
-	private final WebCrawler webCrawler;
+	private final SupportCrawler webCrawler;
 	
-	public Controller(WebCrawler webCrawler) {
+	public Controller(SupportCrawler webCrawler) {
 		this.webCrawler = webCrawler;
 	}
 	
