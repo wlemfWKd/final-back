@@ -15,7 +15,7 @@ import org.jsoup.select.Elements;
 
 @RestController
 @RequestMapping("/crawl")
-public class WebCrawler {
+public class SupportCrawler {
 
     @GetMapping
     public Map<String, Object> crawl() {
