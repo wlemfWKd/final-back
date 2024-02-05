@@ -25,13 +25,14 @@ public class Controller {
 		System.out.println("다시해봅시다");
 		System.out.println("다시해봅시다ㅇㅇㅇㅇ");
 		System.out.println("변경");
+		System.out.println("변경dsklfjweiotghjweiogjseiohg");
 		return test;
 	}
 	
-	@GetMapping("/crawl")
-	public void crawl() {
-		webCrawler.crawl();
-	}
+//	@GetMapping("/crawl")
+//	public void crawl() {
+//		webCrawler.crawl();
+//	}
 	
 
 
