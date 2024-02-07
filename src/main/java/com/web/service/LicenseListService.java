@@ -22,7 +22,6 @@ import org.w3c.dom.NodeList;
 import com.web.data.TestList;
 import com.web.domain.LicenseList;
 import com.web.domain.Yes24BookCrawl;
-import com.web.persistence.CrawlRepository;
 import com.web.persistence.LicenseRepository;
 
 @Service
