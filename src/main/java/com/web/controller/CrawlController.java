@@ -10,14 +10,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.web.domain.Yes24BookCrawl;
-import com.web.service.BookCrawlService;
+import com.web.service.Yes24CrawlService;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/detail")
 public class CrawlController {
 
 	@Autowired
-	private BookCrawlService bookCrawlService;
+	private Yes24CrawlService bookCrawlService;
 	
 	@GetMapping("/books")
     public ResponseEntity<List<Yes24BookCrawl>> getBooks() {
