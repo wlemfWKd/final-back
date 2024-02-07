@@ -57,6 +57,19 @@
 			<artifactId>jsoup</artifactId>
 			<version>1.17.2</version>
 		</dependency>
+		
+		
+		<dependency>
+            <groupId>net.minidev</groupId>
+            <artifactId>json-smart</artifactId>
+            <version>2.4.7</version> <!-- 사용 가능한 최신 버전으로 업데이트 가능 -->
+        </dependency>
+        
+        <dependency>
+    <groupId>com.fasterxml.jackson.dataformat</groupId>
+    <artifactId>jackson-dataformat-xml</artifactId>
+    <version>2.13.0</version> <!-- 사용 가능한 최신 버전으로 업데이트 가능 -->
+</dependency>
 	</dependencies>
 
 	<build>
