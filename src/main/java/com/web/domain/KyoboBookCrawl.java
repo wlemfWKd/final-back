@@ -14,25 +14,28 @@ import lombok.ToString;
 @ToString
 @Builder
 @Entity
-@Table(name = "YES24CRAWL")
-public class Yes24BookCrawl {                                                                            
-
+@Table(name = "KYOBOCRAWL")
+public class KyoboBookCrawl {
+	
 	@Id
 	private String bookName;
-
+	
 	private int bookPrice;
-	private String viewDetail; //상세보기 링
+	private String viewDetail;
 	private String imageName;
-
-	// 기본 생성자 추가
-	public Yes24BookCrawl() {
+	
+	public KyoboBookCrawl() {
+		
 	}
-
-	public Yes24BookCrawl(String bookName, int bookPrice, String viewDetail, String imageName) {
+	
+	public KyoboBookCrawl(String bookName, int bookPrice, String viewDetail, String imageName) {
 		super();
 		this.bookName = bookName;
 		this.bookPrice = bookPrice;
 		this.viewDetail = viewDetail;
 		this.imageName = imageName;
 	}
+	
+	
+
 }
