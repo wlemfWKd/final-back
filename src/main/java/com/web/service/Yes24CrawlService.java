@@ -17,15 +17,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.web.domain.Yes24BookCrawl;
-import com.web.persistence.CrawlRepository;
+import com.web.persistence.Yes24CrawlRepository;
 
 @Service
-public class BookCrawlService {
+public class Yes24CrawlService {
 	
 	@Autowired
-	private CrawlRepository crawlRepository;
+	private Yes24CrawlRepository crawlRepository;
 	
-	public BookCrawlService(CrawlRepository crawlRepository) {
+	public Yes24CrawlService(Yes24CrawlRepository crawlRepository) {
         this.crawlRepository = crawlRepository;
     }
 
@@ -92,7 +92,7 @@ public class BookCrawlService {
 					.viewDetail("https://yes24.com"+viewDetail)
 					.imageName(imageUri)
 					.build();
-			System.out.println(bookCrawl.toString());
+			//System.out.println(bookCrawl.toString());
 			
 			bookCrawls.add(bookCrawl);
 		}
