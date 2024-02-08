@@ -42,7 +42,7 @@ public class LicenseListService {
         licenseListRepository.saveAll(licenseList);
     }
     
-    
+     
     
     public static void main(String[] args) {
         
