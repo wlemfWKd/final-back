@@ -66,18 +66,3 @@ public class LicenseList {
     }
     
 }
-
-
-
-//@Id
-//private Long jmcd;
-//
-//private String jmfldnm;
-//private Long mdobligfldcd;
-//private String mdobligfldnm;
-//private Long obligfldcd;
-//private String obligfldnm;
-//private String qualgbcd;
-//private String qualgbnm;
-//private Long seriescd;
-//private String seriesnm;
