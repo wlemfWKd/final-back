@@ -1,18 +1,19 @@
 package com.web.Crawler;
 
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
-
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+
 @RestController
-@RequestMapping("/crawl")
+@RequestMapping("/support")
 public class SupportCrawler {
 
     @GetMapping
@@ -27,12 +28,16 @@ public class SupportCrawler {
             Map<String, String> resultMap4 = crawlUrl("https://www.youthcenter.go.kr/youngPlcyUnif/youngPlcyUnifDtl.do?pageIndex=1&frameYn=&bizId=R2024011018628&dtlOpenYn=&plcyTpOpenTy=&plcyCmprInfo=&srchWord=&chargerOrgCdAll=&srchAge=&trgtJynEmp=&trgtJynEmp=&srchSortOrder=1&pageUnit=12");
             Map<String, String> resultMap5 = crawlUrl("https://www.youthcenter.go.kr/youngPlcyUnif/youngPlcyUnifDtl.do?pageIndex=1&frameYn=&bizId=R2024010518524&dtlOpenYn=&plcyTpOpenTy=&plcyCmprInfo=&srchWord=&chargerOrgCdAll=&srchAge=&trgtJynEmp=&trgtJynEmp=&srchSortOrder=1&pageUnit=12");
 
+            // 이미지 크롤링 결과를 추가
+            Map<String, String> imageResult = crawlImages("https://www.kua.go.kr/uapda020/selectKuaStoryDtal.do?pageIndex=2&pageUnit=10&srchLinkTycd=A&linkTycd=2&srchTy=&srchKwrd=&ntceStno=84");
+
             // 최종 결과를 응답에 담음
             response.put("section1", resultMap1);
             response.put("section2", resultMap2);
             response.put("section3", resultMap3);
             response.put("section4", resultMap4);
             response.put("section5", resultMap5);
+            response.put("images", imageResult);
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -57,5 +62,18 @@ public class SupportCrawler {
         }
 
         return resultMap;
+    }
+
+    private Map<String, String> crawlImages(String url) throws IOException {
+        Map<String, String> imageResult = new HashMap<>();
+        Document document = Jsoup.connect(url).get();
+        Elements imgElements = document.select(".slider li:nth-child(2) img");
+
+        for (Element imgElement : imgElements) {
+            String imgUrl = imgElement.absUrl("src");
+            imageResult.put("image_url", imgUrl);
+        }
+
+        return imageResult;
     }
 }
