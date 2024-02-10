@@ -147,5 +147,8 @@ public class LicenseListService {
         return ""; // XML 요소의 텍스트 값이 존재하지 않을 때 빈 문자열 반환
     }
 
+    public List<LicenseList> getAllLicenses() {
+		return licenseListRepository.findAll();
+	}
     
 }
