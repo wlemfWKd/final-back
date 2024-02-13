@@ -1,51 +1,35 @@
-package com.web.service;
+package com.web.data;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
+import java.net.URI;
 import java.net.URL;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.annotation.PostConstruct;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import com.web.domain.LicenseInfo;
-import com.web.domain.LicenseList;
-import com.web.persistence.InfoRepository;
 
-@Service
-public class LicenseInfoService {
-
-	@Autowired
-    private InfoRepository InfoRepository;
-
-    public LicenseInfoService(InfoRepository infoRepository) {
-        this.InfoRepository = infoRepository;
-    }
-    
-    public void saveInfo(LicenseInfo infoRepository) {
-    	InfoRepository.save(infoRepository);
-    }
-    
-    public void saveLicenseInfo(List<LicenseInfo> infoRepository) {
-    	InfoRepository.saveAll(infoRepository);
-    }
-	
+public class TestInfo {
     public static void main(String[] args) {
-
+    	TestInfo td = new TestInfo();
+    	td.getInfoData();
     }
     
-    //@PostConstruct
-	public void getInfoData() {
+    public void getInfoData() {
 	    HttpURLConnection conn = null;
 	    BufferedReader rd = null;
 
@@ -98,7 +82,7 @@ public class LicenseInfoService {
             DocumentBuilder builder = factory.newDocumentBuilder();
             Document document = builder.parse(new org.xml.sax.InputSource(new java.io.StringReader(xmlResponse2)));
 
-            List<LicenseInfo> Infos = new ArrayList<>();
+            
             
             int count =0; //
             NodeList itemList = document.getElementsByTagName("item");
@@ -108,23 +92,21 @@ public class LicenseInfoService {
                     Element itemElement = (Element) itemNode;
 
                     count++; //                    
-                    LicenseInfo licenseInfo = LicenseInfo.builder()
-                    	    .jmnm(getTagValue("jmNm", itemElement))
-                    	    .career(getTagValue("career", itemElement))
-                    	    .implnm(getTagValue("implNm", itemElement))
-                    	    .instinm(getTagValue("instiNm", itemElement))
-                    	    .job(getTagValue("job", itemElement))
-                    	    .seriesnm(getTagValue("seriesNm", itemElement))
-                    	    .summary(getTagValue("summary", itemElement))
-                    	    .trend(getTagValue("trend", itemElement))
-                    	    .build();
+                    LicenseInfo licenseInfo = new LicenseInfo();
+                    licenseInfo.setJmnm(getTagValue("jmNm", itemElement));
+                    licenseInfo.setCareer(getTagValue("career", itemElement));
+                    licenseInfo.setImplnm(getTagValue("implNm", itemElement));
+                    licenseInfo.setInstinm(getTagValue("instiNm", itemElement));
+                    licenseInfo.setJob(getTagValue("job", itemElement));
+                    licenseInfo.setSeriesnm(getTagValue("seriesNm", itemElement));
+                    licenseInfo.setSummary(getTagValue("summary", itemElement));
+                    licenseInfo.setTrend(getTagValue("trend", itemElement));
+                    	    
 
-                   System.out.println(licenseInfo);
-                   Infos.add(licenseInfo);
-                    
+                    System.out.println(licenseInfo);
+                    System.out.println(count);
                 }
             }
-            saveLicenseInfo(Infos);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -147,10 +129,6 @@ public class LicenseInfoService {
 	        }
 	    }
 	    return ""; // XML 요소의 텍스트 값이 존재하지 않을 때 빈 문자열 반환
-	}
-	
-	public List<LicenseInfo> getAllInfo() {
-		return InfoRepository.findAll();
 	}
 	
 }
