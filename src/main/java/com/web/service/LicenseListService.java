@@ -49,7 +49,7 @@ public class LicenseListService {
 
     }
     
-    @PostConstruct
+    //@PostConstruct
     public void getDataAndSaveToDB() {
         HttpURLConnection conn = null;
         BufferedReader rd = null;
