@@ -18,9 +18,12 @@ import java.io.IOException;
 
 public class TestGrade {
     public static void main(String[] args) throws IOException {
-        StringBuilder urlBuilder = new StringBuilder("http://openapi.q-net.or.kr/api/service/rest/InquiryStatSVC/getCertYearGradeList"); /*URL*/
+        StringBuilder urlBuilder = new StringBuilder("https://apis.data.go.kr/B490007/qualExamSchd/getQualExamSchdList"); /*URL*/
         urlBuilder.append("?" + URLEncoder.encode("serviceKey","UTF-8") + "=8RQmmNMbqQKZO06m6d44ZNTJv55aWC7ld4cj5de9n14a6o3tbFOrn%2FF3Aa5cVQzRVlpUr2nt2J9sjnqrnD2KLA%3D%3D"); /*Service Key*/
-        urlBuilder.append("&" + URLEncoder.encode("baseYY","UTF-8") + "=" + URLEncoder.encode("2022", "UTF-8")); /*기준년도*/
+        urlBuilder.append("&" + URLEncoder.encode("dataFormat","UTF-8") + "=" + URLEncoder.encode("xml", "UTF-8")); 
+        urlBuilder.append("&" + URLEncoder.encode("implYy","UTF-8") + "=" + URLEncoder.encode("2024", "UTF-8")); /*기준년도*/
+		urlBuilder.append("&numOfRows=50");
+        
         URL url = new URL(urlBuilder.toString());
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
         conn.setRequestMethod("GET");

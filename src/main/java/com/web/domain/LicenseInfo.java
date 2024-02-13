@@ -20,16 +20,15 @@ public class LicenseInfo {
 
 	
 	@Id
-	private String jmNm;
+	private String jmnm;
 	
 	@Column( name = "career", length = 1000)
-	private String Career;
-	private String implNm;
-	private String instiNm;
+	private String career;
+	private String implnm;
+	private String instinm;
 	@Column( name = "job", length = 1000)
 	private String job;
-	private String mdobligFIdNm;
-	private String seriesNm;
+	private String seriesnm;
 	@Column( name = "summary", length = 1000)
 	private String summary;
 	@Column( name = "trend", length = 1000)
@@ -38,15 +37,14 @@ public class LicenseInfo {
 	public LicenseInfo() {	
     }
 
-	public LicenseInfo(String jmNm, String career, String implNm, String instiNm, String job, String mdobligFIdNm,
-			String seriesNm, String summary, String trend) {
-		this.jmNm = jmNm;
-		this.Career = career;
-		this.implNm = implNm;
-		this.instiNm = instiNm;
+	public LicenseInfo(String jmnm, String career, String implnm, String instinm, String job,
+			String seriesnm, String summary, String trend) {
+		this.jmnm = jmnm;
+		this.career = career;
+		this.implnm = implnm;
+		this.instinm = instinm;
 		this.job = job;
-		this.mdobligFIdNm = mdobligFIdNm;
-		this.seriesNm = seriesNm;
+		this.seriesnm = seriesnm;
 		this.summary = summary;
 		this.trend = trend;
 	}

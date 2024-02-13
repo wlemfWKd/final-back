@@ -13,15 +13,12 @@ import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import com.web.data.TestList;
 import com.web.domain.LicenseList;
-import com.web.domain.Yes24BookCrawl;
 import com.web.persistence.LicenseRepository;
 
 @Service
@@ -42,14 +39,7 @@ public class LicenseListService {
         licenseListRepository.saveAll(licenseList);
     }
     
-     
-    
-    public static void main(String[] args) {
-        
-
-    }
-    
-    //@PostConstruct
+    //@PostConstruct 
     public void getDataAndSaveToDB() {
         HttpURLConnection conn = null;
         BufferedReader rd = null;
@@ -100,16 +90,14 @@ public class LicenseListService {
             DocumentBuilder builder = factory.newDocumentBuilder();
             Document document = builder.parse(new org.xml.sax.InputSource(new java.io.StringReader(xmlResponse)));
 
-            List<LicenseList> Lists = new ArrayList<>();
+            List<LicenseList> Lists = new ArrayList<>(); 
             
-            int count =0; //
             NodeList itemList = document.getElementsByTagName("item");
             for (int i = 0; i < itemList.getLength(); i++) {
                 Node itemNode = itemList.item(i);
                 if (itemNode.getNodeType() == Node.ELEMENT_NODE) {
                     Element itemElement = (Element) itemNode;
 
-                    count++; //                    
                     LicenseList licenseList = LicenseList.builder()
                     	    .jmcd(getTagValue("jmcd", itemElement))
                     	    .jmfldnm(getTagValue("jmfldnm", itemElement))
@@ -123,9 +111,7 @@ public class LicenseListService {
                     	    .seriesnm(getTagValue("seriesnm", itemElement))
                     	    .build();
 
-                   System.out.println(licenseList);
                     Lists.add(licenseList);
-                    
                 }
             }
             saveLicenseList(Lists);
