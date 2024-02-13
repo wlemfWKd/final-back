@@ -49,20 +49,4 @@ public class LicenseList {
 		this.seriesnm = seriesnm;
 	}
     
-	@Override
-    public String toString() {
-        return "LicenseList{" +
-                "jmcd='" + jmcd + '\'' +
-                ", jmfldnm='" + jmfldnm + '\'' +
-                ", mdobligfldcd='" + mdobligfldcd + '\'' +
-                ", mdobligfldnm='" + mdobligfldnm + '\'' +
-                ", obligfldcd='" + obligfldcd + '\'' +
-                ", obligfldnm='" + obligfldnm + '\'' +
-                ", qualgbcd='" + qualgbcd + '\'' +
-                ", qualgbnm='" + qualgbnm + '\'' +
-                ", seriescd='" + seriescd + '\'' +
-                ", seriesnm='" + seriesnm + '\'' +
-                '}';
-    }
-    
 }
