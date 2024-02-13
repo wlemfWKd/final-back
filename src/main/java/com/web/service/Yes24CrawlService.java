@@ -49,7 +49,7 @@ public class Yes24CrawlService {
         }
     }
 	
-    @PostConstruct
+//    @PostConstruct
     public void getBooktDates() throws IOException {
         List<Yes24BookCrawl> bookCrawls = new ArrayList<>();
         int maxPages = 4; // 최대 페이지 수 설정
