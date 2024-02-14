@@ -20,11 +20,11 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.web.domain.CheckMemberEmail;
+import com.web.domain.JoinDTO;
 import com.web.domain.Member;
 import com.web.domain.Role;
-import com.web.dto.JoinDTO;
-import com.web.repository.CheckMemberEmailRepository;
-import com.web.repository.MemberRepository;
+import com.web.persistence.CheckMemberEmailRepository;
+import com.web.persistence.MemberRepository;
 @Service
 public class MemberServiceImpl implements MemberService{
 	@Autowired
@@ -66,7 +66,7 @@ public class MemberServiceImpl implements MemberService{
 		if(result) {
 			return "Exist";
 		}
-		return "Can Use";
+		return "사용가능한 아이디 입니다.";
 	}
 	
 	// 이메일 중복확인
@@ -87,7 +87,7 @@ public class MemberServiceImpl implements MemberService{
 		if(result) {
 			return "Exist";
 		}
-		return "Can Use";
+		return "사용가능한 이메일 입니다.";
 	}
 
 	// 이메일 인증 
@@ -107,7 +107,7 @@ public class MemberServiceImpl implements MemberService{
             MimeMessage mimeMessage = javaMailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true);
 
-            helper.setSubject("별책빵 회원가입 이메일 인증");
+            helper.setSubject("CERTIFICATE.ZIP 회원가입 이메일 인증");
             helper.setTo(email);
 
             StringBuilder emailContent = new StringBuilder();
@@ -151,15 +151,15 @@ public class MemberServiceImpl implements MemberService{
 			checkMemberEmail = optional.get();
 			if(joinDTO.getRandomInitial().equals(checkMemberEmail.getRandomInitial())) {
 				checkMemberEmailRepository.deleteById(email);
-				return "Success";
+				return "이메일 인증에 성공하였습니다.";
 			}
-			return "Failure";
+			return "이메일 인증에 실패하였습니다.";
 		}
-		return "Failure";
+		return "이메일 인증에 실패하였습니다.";
 	}
 
 	// 회원가입
-	@Override
+	@Override 
 	public String join(JoinDTO joinDTO) {
 		// TODO Auto-generated method stub
 		Member member = Member.builder()
@@ -173,7 +173,7 @@ public class MemberServiceImpl implements MemberService{
 				.role(Role.USER)
 				.build();
 		memberRepository.save(member);
-		return "ok";
+		return "회원가입이 되었습니다.";
 	}
 	// 필요할 때 토큰 넘겨서 username(아이디)로 멤버 정보 불러오기
 	@Override

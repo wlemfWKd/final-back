@@ -13,9 +13,9 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.web.domain.CheckMemberEmail;
+import com.web.domain.JoinDTO;
 import com.web.domain.Member;
 import com.web.domain.Role;
-import com.web.dto.JoinDTO;
 import com.web.jwt.JWTUtil;
 import com.web.service.MemberService;
 

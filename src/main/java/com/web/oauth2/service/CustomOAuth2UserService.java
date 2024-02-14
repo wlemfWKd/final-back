@@ -14,7 +14,7 @@ import com.web.domain.Member;
 import com.web.domain.SocialType;
 import com.web.oauth2.CustomOAuth2User;
 import com.web.oauth2.OAuthAttributes;
-import com.web.repository.MemberRepository;
+import com.web.persistence.MemberRepository;
 
 import java.util.Collections;
 import java.util.Map;
