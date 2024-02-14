@@ -1,4 +1,4 @@
-package com.web.dto;
+package com.web.domain;
 
 import lombok.Data;
 import lombok.Getter;
