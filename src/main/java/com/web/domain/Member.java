@@ -23,6 +23,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 @Getter
+@Setter
 @ToString
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
@@ -33,6 +34,7 @@ import lombok.ToString;
 public class Member extends BaseEntity{
 
 	@Id
+	@Column(name = "MEMBER_NUM")
 	@GeneratedValue(strategy = GenerationType.SEQUENCE)
 	private Long memberNum;
 
