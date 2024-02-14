@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.web.domain.CheckMemberEmail;
@@ -17,6 +18,7 @@ import com.web.domain.JoinDTO;
 import com.web.domain.Member;
 import com.web.domain.Role;
 import com.web.jwt.JWTUtil;
+import com.web.persistence.MemberRepository;
 import com.web.service.MemberService;
 
 @RestController
@@ -24,6 +26,10 @@ public class MemberController {
 	// 회원정보 서비스
 	@Autowired
 	private MemberService memberService;
+	
+	@Autowired
+	private MemberRepository memberRepo;
+	
 	// 토큰을 사용하여 회원정보 불러오기 위해 선언
 	private final JWTUtil jwtUtil;
     public MemberController(JWTUtil jwtUtil) {
@@ -89,4 +95,17 @@ public class MemberController {
         }
         return map;
     }
+	
+	// 아이디 찾기
+		@GetMapping("/getUserName")
+	    public String getMemberName(@RequestParam String data, @RequestParam String searchMethod) {
+	        Member member = null;
+	        if ("email".equals(searchMethod)) {
+	            member = memberRepo.findByEmail(data);
+	        } else if ("phone".equals(searchMethod)) {
+	            member = memberRepo.findByPhoneNum(data);
+	        }
+	        return member != null ? member.getUsername() : null;
+	    }
+		
 }

@@ -7,11 +7,13 @@ import javax.persistence.Table;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 @Getter
 @Setter
 @Entity
 @Builder
+@ToString
 @Table(name="licenseaccess")
 public class LicenseAccess {
 	

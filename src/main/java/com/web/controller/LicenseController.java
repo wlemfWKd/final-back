@@ -10,8 +10,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.web.domain.LicensRank;
+import com.web.domain.LicenseAccess;
 import com.web.domain.LicenseInfo;
 import com.web.domain.LicenseList;
+import com.web.service.LicenseAccessService;
 import com.web.service.LicenseInfoService;
 import com.web.service.LicenseRankService;
 
@@ -26,7 +28,11 @@ public class LicenseController {
 	@Autowired
 	private LicenseInfoService infoService;
 	
-	@Autowired LicenseRankService rankService;
+	@Autowired 
+	private LicenseRankService rankService;
+	
+	@Autowired
+	private LicenseAccessService acService;
 	
 	@GetMapping("/list")
 	public ResponseEntity<List<LicenseList>> getLicenses() {
@@ -44,6 +50,12 @@ public class LicenseController {
 	public ResponseEntity<List<LicensRank>> getRank() {
         List<LicensRank> rank = rankService.getAllRanks();
         return new ResponseEntity<>(rank, HttpStatus.OK);
+    }
+	
+	@GetMapping("/access")
+	public ResponseEntity<List<LicenseAccess>> getAc() {
+        List<LicenseAccess> ac = acService.getAllAccess();
+        return new ResponseEntity<>(ac, HttpStatus.OK);
     }
 	
 }

@@ -18,18 +18,18 @@ import com.web.domain.LicenseAccess;
 
 public class TestAccess {
 	public static void main(String[] args) {
-		TestNo td = new TestNo();
-		td.getNoData();
+		TestAccess td = new TestAccess();
+		td.getacData();
 	}
 
-	public void getNoData() {
+	public void getacData() {
 		HttpURLConnection conn = null;
 		BufferedReader rd = null;
 
 		try {
 			
 				StringBuilder urlBuilder = new StringBuilder(
-						"http://openapi.q-net.or.kr/api/service/rest/InquiryGrdPtcondSVC/getRecpUppeJmList"); /* URL */
+						"http://openapi.q-net.or.kr/api/service/rest/InquiryExamQualItemSVC/getList"); /* URL */
 				urlBuilder.append(
 						"?serviceKey=8RQmmNMbqQKZO06m6d44ZNTJv55aWC7ld4cj5de9n14a6o3tbFOrn%2FF3Aa5cVQzRVlpUr2nt2J9sjnqrnD2KLA%3D%3D"); /*
 																																		 * Service
@@ -88,7 +88,7 @@ public class TestAccess {
 				if (itemNode.getNodeType() == Node.ELEMENT_NODE) {
 					Element itemElement = (Element) itemNode;
 
-					
+						count++;
 						LicenseAccess AC = new LicenseAccess();
 						AC.setEmqualdispnm(getTagValue("emqualDispNm", itemElement));
 						AC.setGrdnm(getTagValue("grdNm", itemElement));
