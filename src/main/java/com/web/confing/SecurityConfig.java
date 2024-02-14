@@ -24,7 +24,7 @@ import com.web.jwt.LoginFilter;
 import com.web.oauth2.handler.OAuth2LoginFailureHandler;
 import com.web.oauth2.handler.OAuth2LoginSuccessHandler;
 import com.web.oauth2.service.CustomOAuth2UserService;
-import com.web.repository.MemberRepository;
+import com.web.persistence.MemberRepository;
 
 import lombok.RequiredArgsConstructor;
 

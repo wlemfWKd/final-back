@@ -13,7 +13,7 @@ import com.web.domain.Member;
 import com.web.domain.Role;
 import com.web.jwt.JWTUtil;
 import com.web.oauth2.CustomOAuth2User;
-import com.web.repository.MemberRepository;
+import com.web.persistence.MemberRepository;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;

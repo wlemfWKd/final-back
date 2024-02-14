@@ -1,4 +1,4 @@
-package com.web.repository;
+package com.web.persistence;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
