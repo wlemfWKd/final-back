@@ -1,7 +1,7 @@
 package com.web.service;
 
+import com.web.domain.JoinDTO;
 import com.web.domain.Member;
-import com.web.dto.JoinDTO;
 
 public interface MemberService {
 	// 아이디 중복확인

@@ -3,10 +3,10 @@ package com.web.service;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.web.domain.JoinDTO;
 import com.web.domain.Member;
 import com.web.domain.Role;
-import com.web.dto.JoinDTO;
-import com.web.repository.MemberRepository;
+import com.web.persistence.MemberRepository;
 
 @Service
 public class JoinService {

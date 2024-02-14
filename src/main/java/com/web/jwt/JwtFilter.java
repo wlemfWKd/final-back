@@ -20,7 +20,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import com.web.domain.Member;
 import com.web.domain.Role;
 import com.web.jwt.dto.CustomUserDetails;
-import com.web.repository.MemberRepository;
+import com.web.persistence.MemberRepository;
 
 import lombok.extern.slf4j.Slf4j;
 

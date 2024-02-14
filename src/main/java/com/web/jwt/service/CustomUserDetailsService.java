@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.web.domain.Member;
 import com.web.jwt.dto.CustomUserDetails;
-import com.web.repository.MemberRepository;
+import com.web.persistence.MemberRepository;
 
 @Service
 public class CustomUserDetailsService implements UserDetailsService {

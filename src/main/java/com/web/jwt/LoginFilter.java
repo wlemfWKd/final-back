@@ -18,7 +18,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.web.dto.LoginRequest;
+import com.web.domain.LoginRequest;
 import com.web.jwt.dto.CustomUserDetails;
 
 public class LoginFilter extends UsernamePasswordAuthenticationFilter {
