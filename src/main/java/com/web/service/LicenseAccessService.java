@@ -12,6 +12,7 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -20,6 +21,7 @@ import org.w3c.dom.NodeList;
 import com.web.domain.LicenseAccess;
 import com.web.persistence.LicenseAccessRepository;
 
+@Service
 public class LicenseAccessService {
 
 	 	@Autowired
@@ -39,14 +41,14 @@ public class LicenseAccessService {
 	
 	    
 	    //@PostConstruct
-	    public void getNoData() {
+	    public void getacData() {
 			HttpURLConnection conn = null;
 			BufferedReader rd = null;
 
 			try {
 				
 					StringBuilder urlBuilder = new StringBuilder(
-							"http://openapi.q-net.or.kr/api/service/rest/InquiryGrdPtcondSVC/getRecpUppeJmList"); /* URL */
+							"http://openapi.q-net.or.kr/api/service/rest/InquiryExamQualItemSVC/getList"); /* URL */
 					urlBuilder.append(
 							"?serviceKey=8RQmmNMbqQKZO06m6d44ZNTJv55aWC7ld4cj5de9n14a6o3tbFOrn%2FF3Aa5cVQzRVlpUr2nt2J9sjnqrnD2KLA%3D%3D"); /*
 																																			 * Service
@@ -100,19 +102,18 @@ public class LicenseAccessService {
 
 				List<LicenseAccess> Lists = new ArrayList<>();
 				
-				int count = 0;
 				NodeList itemList = document.getElementsByTagName("item");
 				for (int i = 0; i < itemList.getLength(); i++) {
 					Node itemNode = itemList.item(i);
 					if (itemNode.getNodeType() == Node.ELEMENT_NODE) {
 						Element itemElement = (Element) itemNode;
 
-						
-							LicenseAccess AC = new LicenseAccess();
-							AC.setEmqualdispnm(getTagValue("emqualDispNm", itemElement));
-							AC.setGrdnm(getTagValue("grdNm", itemElement));
-							AC.setGrdcd(getTagValue("grdCd", itemElement));
-
+							LicenseAccess AC = LicenseAccess.builder()
+							.emqualdispnm(getTagValue("emqualDispNm", itemElement))
+							.grdnm(getTagValue("grdNm", itemElement))
+							.grdcd(getTagValue("grdCd", itemElement))
+							.build();
+							
 							Lists.add(AC);
 						}
 					}
