@@ -20,6 +20,7 @@ import com.web.domain.Role;
 import com.web.jwt.JWTUtil;
 import com.web.persistence.MemberRepository;
 import com.web.service.MemberService;
+import com.web.service.TokenService;
 
 @RestController
 public class MemberController {
@@ -30,60 +31,62 @@ public class MemberController {
 	@Autowired
 	private MemberRepository memberRepo;
 	
-	// 토큰을 사용하여 회원정보 불러오기 위해 선언
+	@Autowired
+	private TokenService tokenService;
+	
+	
 	private final JWTUtil jwtUtil;
     public MemberController(JWTUtil jwtUtil) {
         this.jwtUtil = jwtUtil;
     }
 	
-	// 아이디 중복확인
+
 	@PostMapping("/checkId")
 	public String checkId(@RequestBody JoinDTO joinDTO) {
 		String res = memberService.checkId(joinDTO.getUsername());
 		return res;
 	}
 	
-	// 이메일 중복확인
+
 	@PostMapping("/checkEmail")
 	public String checkEmail(@RequestBody JoinDTO joinDTO) {
 		String res = memberService.checkEmail(joinDTO);
 		return res;
 	}
 	
-	// 이메일에 인증코드 전송
+
 	@PostMapping("/checkMemberEmail")
 	public String checkMemberEmail(@RequestBody JoinDTO joinDTO) {
 		String res = memberService.checkMemberEmail(joinDTO);
 		return res;
 	}
 	
-	// 전송했던 인증코드 확인
+
 	@PostMapping("/checkCode")
 	public String checkCode(@RequestBody JoinDTO joinDTO) {
 		String res = memberService.checkCode(joinDTO);
 		return res;
 	}
 	
-	// 회원가입
+
 	@PostMapping("/join")
 	public String join(@RequestBody JoinDTO joinDTO) {
 		String res = memberService.join(joinDTO);
 		return res;
 	}
 	
-	// 필요할 때 토큰 넘겨서 username(아이디)로 멤버 정보 불러오기
+
 	@PostMapping("/getIdRole")
     public Map<String, Object> getCurrentMember(@RequestHeader(name = HttpHeaders.AUTHORIZATION, required = false) String token) {
 		Map<String, Object> map = new HashMap<>();
         if (token != null && token.startsWith("Bearer ")) {
             String jwtToken = token.substring(7);
             
-            // 토큰을 이용해 사용자 정보 추출
-            // 권한만 확인
+
             Role role = jwtUtil.getRole(jwtToken);
             map.put("Role", role);
             
-            // 아이디로 멤버 정보 전체 반환
+
             String username = jwtUtil.getUsername(jwtToken);
             Member member = memberService.getMemberInfo(username);
             if(member != null) {
@@ -96,6 +99,25 @@ public class MemberController {
         return map;
     }
 	
+
+		@PostMapping("/getMemberInfo")
+		public Map<String, Object> getMemberInfo(@RequestHeader(name = HttpHeaders.AUTHORIZATION, required = false) String token){
+			System.out.println("Received token: " + token); // 토큰값을 콘솔에 출력
+			Map<String, Object> map = new HashMap<>();
+			boolean validTocken = tokenService.existMember(token);
+			if(validTocken) {
+				Member currentMember = tokenService.getMemberByMemberNum(token);
+				map.put("result", "Success");
+				map.put("currentMember", currentMember);
+				System.out.println("성공");
+			} else {
+				map.put("result", "Failure");
+				System.out.println("실패");
+			}
+			return map;
+		}
+
+		
 	// 아이디 찾기
 		@GetMapping("/getUserName")
 	    public String getMemberName(@RequestParam String data, @RequestParam String searchMethod) {
@@ -107,5 +129,28 @@ public class MemberController {
 	        }
 	        return member != null ? member.getUsername() : null;
 	    }
+		
+		// 회원정보 수정
+		@PostMapping("/editMemberInfo")
+		public String editMemberInfo(@RequestBody JoinDTO joinDTO) {
+			// 멤버넘버로 찾자
+			String res = memberService.editMemberInfo(joinDTO);
+			return res;
+		}
+		
+		// Pwd 찾기 모달 띄우기 
+		@PostMapping("/findPwd")
+		public Map<String, Object> findPwd(@RequestBody JoinDTO joinDTO) {
+			System.out.println(joinDTO);
+			Map<String, Object> resultMap = memberService.findPwd(joinDTO);
+			return resultMap;
+		}
+		// Pwd 재설정 
+		@PostMapping("/editPassword")
+		public String editPassword(@RequestBody JoinDTO joinDTO) {
+			System.out.println(joinDTO);
+			String result = memberService.editPwd(joinDTO);
+			return result;
+		}
 		
 }

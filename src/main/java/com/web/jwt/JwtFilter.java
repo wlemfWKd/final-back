@@ -142,8 +142,9 @@ public class JwtFilter extends OncePerRequestFilter {
 		log.info("checkAccessTokenAndAuthentication() 호출");
 		jwtUtil.extractAccessToken(request)
 		.filter(jwtUtil::isTokenValid)
-		.ifPresent(accessToken -> jwtUtil.getEmailOpt(accessToken)
-		.ifPresent(email -> Optional.of(mRepo.findByEmail(email))
+		.ifPresent(accessToken -> jwtUtil.getMemberNum(accessToken)
+//		.ifPresent(email -> Optional.of(mRepo.findByEmail(email))
+		.ifPresent(memberNum -> Optional.of(mRepo.findById(memberNum).get())
 		.ifPresent(this::saveAuthentication)));
 		
 		filterChain.doFilter(request, response);

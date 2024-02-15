@@ -33,6 +33,13 @@ public class TokenService {
         Member member = mRepo.findByEmail(email);
         
         return member;
-}
+	}
+	public Member getMemberByMemberNum(String token) {
+		String jwtToken = token.substring(7);
+		Long memberNum = jwtUtil.getMemberNum(jwtToken).get();
+		Member member = mRepo.findById(memberNum).get();
+		System.out.println(member);
+		return member;
+	}
 	
 }
