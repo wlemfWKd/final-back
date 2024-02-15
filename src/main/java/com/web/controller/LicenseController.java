@@ -11,9 +11,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.web.domain.LicensRank;
 import com.web.domain.LicenseAccess;
+import com.web.domain.LicenseDate;
 import com.web.domain.LicenseInfo;
 import com.web.domain.LicenseList;
 import com.web.service.LicenseAccessService;
+import com.web.service.LicenseDateService;
 import com.web.service.LicenseInfoService;
 import com.web.service.LicenseRankService;
 
@@ -33,6 +35,9 @@ public class LicenseController {
 	
 	@Autowired
 	private LicenseAccessService acService;
+	
+	@Autowired
+	private LicenseDateService dtService;
 	
 	@GetMapping("/list")
 	public ResponseEntity<List<LicenseList>> getLicenses() {
@@ -58,4 +63,9 @@ public class LicenseController {
         return new ResponseEntity<>(ac, HttpStatus.OK);
     }
 	
+	@GetMapping("/date")
+	public ResponseEntity<List<LicenseDate>> getDt() {
+        List<LicenseDate> dt = dtService.getAllDate();
+        return new ResponseEntity<>(dt, HttpStatus.OK);
+    }
 }

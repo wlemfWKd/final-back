@@ -2,6 +2,8 @@ package com.web.jwt.service;
 
 import java.util.Optional;
 
+import javax.transaction.Transactional;
+
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -21,6 +23,7 @@ public class CustomUserDetailsService implements UserDetailsService {
         this.memberRepository = memberRepository;
     }
 
+    @Transactional
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 

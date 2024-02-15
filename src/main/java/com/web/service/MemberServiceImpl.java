@@ -2,6 +2,8 @@ package com.web.service;
 
 import java.io.File;
 import java.security.SecureRandom;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 import javax.activation.DataHandler;
@@ -186,5 +188,76 @@ public class MemberServiceImpl implements MemberService{
 		}
 		return null;
 	}
+	
+	@Override
+	public String editMemberInfo(JoinDTO joinDTO) {
+		// TODO Auto-generated method stub
+		Optional<Member> optional =  memberRepository.findById(joinDTO.getMemberNum());
+		Member member = null;
+		if(optional.isPresent()) { // 해당 이메일로 조회시 아이디 존재
+			member = optional.get(); // 수정 전 정보
+		}
+		boolean checkSamePassword = bCryptPasswordEncoder.matches(joinDTO.getPassword(), member.getPassword());
+		System.out.println(checkSamePassword);
+		if(checkSamePassword) {
+			System.out.println("진짜로");
+			return "Equal Password";
+		}
+		if(!joinDTO.getPassword().equals("")) { 
+			member.setPassword(bCryptPasswordEncoder.encode(joinDTO.getPassword()));
+		}
+		member.setMemberName(joinDTO.getMemberName());
+		member.setEmail(joinDTO.getEmail());
+		member.setPhoneNum(joinDTO.getPhoneNum());
+		System.out.println("수정전" + member);
+		memberRepository.save(member);
+		return "Success";
+	}
+	
+	// 비밀번호 찾기
+		@Override
+		public Map<String, Object> findPwd(JoinDTO joinDTO) {
+			// TODO Auto-generated method stub
+			Map<String, Object> map = new HashMap<>();
+			try {
+				Optional<Member> optional;
+				if(joinDTO.getEmail().equals("")) { 
+					// 전화번호로 찾기
+					optional = memberRepository.findByUsernameAndMemberNameAndPhoneNum(joinDTO.getUsername(),joinDTO.getMemberName(),joinDTO.getPhoneNum());
+				} else {
+					// 이메일로 찾기
+					optional = memberRepository.findByUsernameAndMemberNameAndEmail(joinDTO.getUsername(),joinDTO.getMemberName(),joinDTO.getEmail());
+				}
+				if(optional.isPresent()) {
+					map.put("result", "Success");
+				} else {
+					map.put("result", "Failure");
+				}
+				return map;
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			return map;
+		}
+		// 비밀번호 재설정
+		@Override
+		public String editPwd(JoinDTO joinDTO) {
+			// TODO Auto-generated method stub
+			Member member =  memberRepository.findByUsername(joinDTO.getUsername());
+			System.out.println(member);
+			boolean checkSamePassword = bCryptPasswordEncoder.matches(joinDTO.getPassword(), member.getPassword());
+			System.out.println(checkSamePassword);
+			if(checkSamePassword) {
+				System.out.println("진짜로");
+				return "Equal Password";
+			}
+			if(!joinDTO.getPassword().equals("")) { 
+				member.setPassword(bCryptPasswordEncoder.encode(joinDTO.getPassword()));
+			}
+			memberRepository.save(member);
+			return "Success";
+		}
+		
 	
 }
