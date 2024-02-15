@@ -1,5 +1,7 @@
 package com.web.service;
 
+import java.util.Map;
+
 import com.web.domain.JoinDTO;
 import com.web.domain.Member;
 
@@ -14,8 +16,13 @@ public interface MemberService {
 	public String checkCode(JoinDTO joinDTO);
 	// 회원가입 
 	public String join(JoinDTO joinDTO);
+	// 회원정보 수정
+	public String editMemberInfo(JoinDTO joinDTO);
 	// 필요할 때 토큰 넘겨서 username(아이디)로 멤버 정보 불러오기
 	public Member getMemberInfo(String username);
 	
+	public Map<String, Object> findPwd(JoinDTO joinDTO);
+	// 비밀번호 재설정
+	public String editPwd(JoinDTO joinDTO);
 	
 }

@@ -6,6 +6,7 @@ import lombok.Setter;
 
 @Data
 public class JoinDTO {
+	private Long memberNum;
 	private String username; 	// 아이디
 	private String password;	// 비밀번호
 	private String memberName;	// 이름
