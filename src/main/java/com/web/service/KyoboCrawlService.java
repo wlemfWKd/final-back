@@ -14,8 +14,10 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import com.web.domain.AladinBookCrawl;
 import com.web.domain.KyoboBookCrawl;
 import com.web.persistence.KyoboCrawlRepository;
 
@@ -25,29 +27,24 @@ public class KyoboCrawlService {
 	@Autowired
 	private KyoboCrawlRepository KyoboRepo;
 
-	public KyoboCrawlService() {
-		// 디폴트 생성자
-	}
 
 	public KyoboCrawlService(KyoboCrawlRepository kyoboRepo) {
 		this.KyoboRepo = kyoboRepo;
 	}
 
-	public void saveKyoboCrawl(KyoboBookCrawl bookCrawl) {
-		KyoboRepo.save(bookCrawl);
-	}
-
-	public void saveKyoboCrawls(List<KyoboBookCrawl> bookCrawl) {
-		KyoboRepo.saveAll(bookCrawl);
+	public void saveKyoboCrawls(List<KyoboBookCrawl> bookCrawls) {
+	    for (KyoboBookCrawl bookCrawl : bookCrawls) {
+	        KyoboRepo.save(bookCrawl);
+	    }
 	}
 
 	public String generateSearchUrl(int page) {
 		try {
-			String seachQuery = "정보처리기사";
+			String seachQuery = "컴퓨터활용";
 			String encodeQuery = URLEncoder.encode(seachQuery, StandardCharsets.UTF_8.toString());
 
-			System.out.println("추출성");
-			return "https://search.kyobobook.co.kr/search?keyword=" + encodeQuery + "&gbCode=TOT&target=total";
+			System.out.println("추출성공");
+			return "https://search.kyobobook.co.kr/search?keyword=" + encodeQuery + "&target=total&gbCode=TOT&page=" + page;
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
 			System.out.println("추출실패");
@@ -55,9 +52,8 @@ public class KyoboCrawlService {
 		}
 	}
 
-	//@PostConstruct
+	@PostConstruct
 	public void getBookData() throws IOException {
-
 		List<KyoboBookCrawl> bookCrawls = new ArrayList<>();
 		int maxPages = 4;
 
@@ -66,32 +62,71 @@ public class KyoboCrawlService {
 
 			Document doc = Jsoup.connect(KYOBO_URL).get();
 
-			String cssSelector = ".wrapper.contents_search_result .container_wrapper #contents .contents_inner .search_result_top .tab_wrap type_line justify ui-tabs ui-corner-all ui-widget ui-widget-content #tabSearch .search_result_wrap .result_area .switch_prod_wrap.view_type_list ul.prod_list li.prod_item";
-			System.out.println(cssSelector);
 			
+			String cssSelector = ".wrapper.contents_search_result .container_wrapper .contents_wrap .contents_inner .search_result_top #tabSearch .search_result_wrap .result_area #shopData_list";
+			String css = "div#shopData_list ul.prod_list";
 			// 페이지에 데이터가 존재하는지 체크
-            if (doc.select(cssSelector).isEmpty()) {
-            	System.out.println("===========데이터 없음 ==========");
-                //break; // 현재 페이지에 데이터가 없으면 루프 중단
-            }
-            
-            Elements contents = doc.select(cssSelector);
-            System.out.println(contents);
-            for(Element content : contents) {
-            	String name = content.select(".prod_area.horizontal .prod_info_box .auto_overflow_wrap.prod_name_group .auto_overflow_contents .auto_overflow_inner .prod_info").text();
-                String priceString = content.select(".prod_price .price .val").text();
-                int price = Integer.parseInt(priceString.replaceAll("[^0-9]", ""));
-                
-                KyoboBookCrawl bookCrawl = KyoboBookCrawl.builder()
-                		.bookName(name)
-                		.bookPrice(price)
-                		.build();
-                
-                bookCrawls.add(bookCrawl);
-            }
+			if (doc.select(cssSelector).isEmpty()) {
+				System.out.println("===========데이터 없음 ==========");
+				// break; // 현재 페이지에 데이터가 없으면 루프 
+			}
+			
+
+				Elements contents = doc.select(css);
+				//System.out.println(contents + "-=-=-=-=-=-=");
+				for (Element content : contents) {
+				    // 책 정보
+				    Elements aTags = content.select("li.prod_item div.prod_area.horizontal div.prod_info_box div.auto_overflow_wrap.prod_name_group div.auto_overflow_contents div.auto_overflow_inner a.prod_info");
+
+				    // 가격 정보
+				    Elements priceElements = content.select("li.prod_item div.prod_area.horizontal div.prod_info_box div.prod_price");
+
+				    // 이미지 정보
+				    Elements imageElements = content.select("li.prod_item span.form_chk.no_label input.result_checkbox.spec_checkbox");
+
+				    for (int i = 0; i < Math.min(Math.min(aTags.size(), imageElements.size()), priceElements.size()); i++) {
+				        Element aTag = aTags.get(i);
+				        Element priceElement = priceElements.get(i);
+				        Element imageElement = imageElements.get(i);
+
+				        // a 태그의 href 속성 값 (이미지 링크)
+				        String imageLink = aTag.attr("href");
+
+				        // a 태그의 id 속성 값을 가져옴
+				        String idValue = aTag.select("span[id]").attr("id");
+
+				        // 각 span에서 텍스트를 가져와서 처리
+				        String name = aTag.select("span#" + idValue).text();
+
+				        // 가격
+				        String price = priceElement.select("span.price span.val").text();
+				        System.out.println(price);
+
+				        // 이미지정보
+				        String imageValue = imageElement.attr("data-bid");
+				        String imageName = "https://contents.kyobobook.co.kr/sih/fit-in/200x0/pdt/"+imageValue+".jpg";
+				        KyoboBookCrawl bookCrawl = KyoboBookCrawl.builder()
+				                .bookName(name)
+				                .bookPrice(price)
+				                .viewDetail(imageLink)
+				                .imageName(imageName)
+				                .build();
+				        bookCrawls.add(bookCrawl);
+				    }
+				}
+
+			
 		}
 		saveKyoboCrawls(bookCrawls);
 
+	}
+	
+
+	
+	//전체 출력해줄 메서드
+	public List<KyoboBookCrawl> getAllBooks(){
+		Sort sortByDatabaseOrder = Sort.by(Sort.Direction.ASC, "id");
+		return KyoboRepo.findAll(sortByDatabaseOrder);
 	}
 
 }

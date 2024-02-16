@@ -14,6 +14,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.web.domain.Yes24BookCrawl;
@@ -68,7 +69,7 @@ public class Yes24CrawlService {
             }
 
             Elements contents = doc.select(cssSelector); // 필요한 정보만 가져오기
-            System.out.println(contents);
+//            System.out.println(contents);
             for (Element content : contents) {
             	String name = content.select("div.item_info div.info_row.info_name a.gd_name").text();
     			String priceString = content.select("div.item_info div.info_row.info_price strong.txt_num em.yes_b").text();			
@@ -80,12 +81,14 @@ public class Yes24CrawlService {
     			Element imgElement = content.select("div.item_img div.img_canvas span.img_item span.img_grp a.lnk_img em.img_bdr img.lazy").first();
     			String imageUri = imgElement.attr("data-original");
     			
+    			String imageUris = content.select("div.item_img div.img_canvas span.img_item span.img_grp a.lnk_img em.img_bdr img").attr("data-original");
+    			
                 Yes24BookCrawl bookCrawl = Yes24BookCrawl.builder()
                         .bookName(name)
                         .bookPrice(price)
                         .viewDetail("https://yes24.com" + viewDetail)
-                        .imageName(imageUri)
-                        .build();   
+                        .imageName(imageUris)
+                        .build();  
 
                 bookCrawls.add(bookCrawl);
             }
@@ -98,11 +101,10 @@ public class Yes24CrawlService {
 
 	
 	
-	//전체 출력해줄 메서드
-	public List<Yes24BookCrawl> getAllBooks() {
-		return crawlRepository.findAll();
-	}
-	
+    public List<Yes24BookCrawl> getAllBooks() {
+        Sort sortByDatabaseOrder = Sort.by(Sort.Direction.ASC, "id"); // id는 엔터티의 기본 키에 해당하는 필드로 가정합니다.
+        return crawlRepository.findAll(sortByDatabaseOrder);
+    }
     
     
 }
