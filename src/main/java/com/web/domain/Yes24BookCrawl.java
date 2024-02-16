@@ -2,8 +2,13 @@ package com.web.domain;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+
+import org.hibernate.annotations.DynamicUpdate;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -19,6 +24,11 @@ import lombok.ToString;
 public class Yes24BookCrawl {                                                                            
 
 	@Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "yes24_seq_generator")
+    @SequenceGenerator(name = "yes24_seq_generator", sequenceName = "yes24_sequence", allocationSize = 1)
+    private Long id;
+	
+	@Column(name = "book_name", nullable =true)
 	private String bookName;
 
 	private int bookPrice;
@@ -32,8 +42,9 @@ public class Yes24BookCrawl {
 	public Yes24BookCrawl() {
 	}
 
-	public Yes24BookCrawl(String bookName, int bookPrice, String viewDetail, String imageName, String defaultColumn) {
+	public Yes24BookCrawl(Long id, String bookName, int bookPrice, String viewDetail, String imageName, String defaultColumn) {
 		super();
+		this.id = id;
 		this.bookName = bookName;
 		this.bookPrice = bookPrice;
 		this.viewDetail = viewDetail;

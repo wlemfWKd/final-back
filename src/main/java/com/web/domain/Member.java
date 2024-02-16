@@ -48,6 +48,7 @@ public class Member extends BaseEntity{
 	private String phoneNum; 	//회원 전화번호
 	private String membership; 	//회원 등급
 	private String socialNum; 	// 생년월일, 성별 확인용
+	private String warning;		//경고
 	
     @Enumerated(EnumType.STRING)
     private Role role;
