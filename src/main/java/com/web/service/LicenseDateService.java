@@ -45,7 +45,7 @@ public class LicenseDateService {
 
     }
 	
-    //@PostConstruct
+    @PostConstruct
 	public void getTestDate() {
 	    HttpURLConnection conn = null;
 	    BufferedReader rd = null;
