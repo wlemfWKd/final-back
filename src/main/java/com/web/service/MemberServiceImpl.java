@@ -1,6 +1,7 @@
 package com.web.service;
 
 import java.io.File;
+import java.security.Principal;
 import java.security.SecureRandom;
 import java.util.HashMap;
 import java.util.Map;
@@ -257,6 +258,15 @@ public class MemberServiceImpl implements MemberService{
 			}
 			memberRepository.save(member);
 			return "Success";
+		}
+		
+		//현재 사용중인 사용자 정보 가져오기
+		public Member getCurrentUser(Principal principal) {
+		    if (principal != null) {
+		        String username = principal.getName();
+		        return memberRepository.findByUsername(username);
+		    }
+		    return null;
 		}
 		
 	

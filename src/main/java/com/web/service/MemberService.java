@@ -1,5 +1,6 @@
 package com.web.service;
 
+import java.security.Principal;
 import java.util.Map;
 
 import com.web.domain.JoinDTO;
@@ -24,5 +25,7 @@ public interface MemberService {
 	public Map<String, Object> findPwd(JoinDTO joinDTO);
 	// 비밀번호 재설정
 	public String editPwd(JoinDTO joinDTO);
+	//현재 사용중인 사용자 정보 가져오기
+	public Member getCurrentUser(Principal principal);
 	
 }
