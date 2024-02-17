@@ -20,6 +20,7 @@ public class TokenService {
     
     public boolean existMember(String token) {
     	if(token != null && token.startsWith("Bearer ")) {
+    		System.out.println("여기까지는 왔니??");
     		return true;
     	}else {
     		return false;
@@ -36,8 +37,14 @@ public class TokenService {
 	}
 	public Member getMemberByMemberNum(String token) {
 		String jwtToken = token.substring(7);
-		Long memberNum = jwtUtil.getMemberNum(jwtToken).get();
-		Member member = mRepo.findById(memberNum).get();
+		System.out.println("확인좀"+jwtToken);
+		
+		String memberE = jwtUtil.getEmailopt(jwtToken).get();
+		System.out.println("했냐????????????");
+		
+		Member member = mRepo.findByEmail(memberE);
+		
+		
 		System.out.println(member);
 		return member;
 	}
