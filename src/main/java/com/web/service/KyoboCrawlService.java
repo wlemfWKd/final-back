@@ -52,7 +52,7 @@ public class KyoboCrawlService {
 		}
 	}
 
-	@PostConstruct
+	//@PostConstruct
 	public void getBookData() throws IOException {
 		List<KyoboBookCrawl> bookCrawls = new ArrayList<>();
 		int maxPages = 4;
