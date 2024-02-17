@@ -57,17 +57,16 @@ public class JWTUtil {
         return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload().get("username", String.class);
     }
     
-//    public Optional<String> getEmailOpt(String token) {
-//    	try {
-//    		return Optional.ofNullable(Jwts.parser()
-//    				.verifyWith(secretKey).build().parseSignedClaims(token).getPayload()
-//    				.get("email", String.class));
-//    		
-//    	}catch(Exception e) {
-//    		log.error("액세스 토큰이 유효하지 않습니다.");
-//            return Optional.empty();
-//    	}
-//    }
+    public Optional<String> getEmailopt(String token) {
+        try {
+            return Optional.ofNullable(Jwts.parser()
+                    .verifyWith(secretKey).build().parseSignedClaims(token).getPayload()
+                    .get("email", String.class));
+        } catch (Exception e) {
+            log.error("액세스 토큰이 유효하지 않습니다.");
+            return Optional.empty();
+        }
+    }
  // 추가
     public Optional<Long> getMemberNum(String token) {
     	try {

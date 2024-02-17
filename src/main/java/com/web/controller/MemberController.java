@@ -102,7 +102,7 @@ public class MemberController {
 
 		@PostMapping("/getMemberInfo")
 		public Map<String, Object> getMemberInfo(@RequestHeader(name = HttpHeaders.AUTHORIZATION, required = false) String token){
-			System.out.println("Received token: " + token); // 토큰값을 콘솔에 출력
+			System.out.println("token 값 : " + token);
 			Map<String, Object> map = new HashMap<>();
 			boolean validTocken = tokenService.existMember(token);
 			if(validTocken) {
