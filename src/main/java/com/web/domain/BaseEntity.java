@@ -1,5 +1,6 @@
 package com.web.domain;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -21,8 +22,8 @@ public abstract class BaseEntity {
 	
 	@CreatedDate
 	@Column(updatable = false)
-	private Date createDate;
+	private LocalDateTime createDate;
 	
 	@LastModifiedDate
-	private Date modifyDate;
+	private LocalDateTime modifyDate;
 }

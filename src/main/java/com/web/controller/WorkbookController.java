@@ -11,7 +11,7 @@ import com.web.domain.WbDTO;
 import com.web.service.WorkbookService;
 
 @RestController
-@RequestMapping("/lecture")
+@RequestMapping("/workbook")
 public class WorkbookController {
 
     @Autowired
