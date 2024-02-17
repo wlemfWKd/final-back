@@ -59,10 +59,6 @@ public class Member extends BaseEntity{
     private String socialId; // 로그인한 소셜 타입의 식별자 값 (일반 로그인인 경우 null)
     private String refreshToken; // 리프레시 토큰 
     
-    
-//	private String locked; 		//정지 여부
-//	private String disabled; 	//탈퇴 여부
-    
     // 유저 권한 설정 메소드
 	public void authorizeUser() {
 	    this.role = Role.USER;
