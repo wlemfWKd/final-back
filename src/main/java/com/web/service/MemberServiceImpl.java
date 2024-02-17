@@ -176,7 +176,7 @@ public class MemberServiceImpl implements MemberService{
 				.role(Role.USER)
 				.build();
 		memberRepository.save(member);
-		return "회원가입이 되었습니다.";
+		return "ok";
 	}
 	// 필요할 때 토큰 넘겨서 username(아이디)로 멤버 정보 불러오기
 	@Override
