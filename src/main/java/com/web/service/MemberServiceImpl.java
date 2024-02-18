@@ -171,7 +171,6 @@ public class MemberServiceImpl implements MemberService{
 				.email(joinDTO.getEmail()+joinDTO.getDomain())
 				.password(bCryptPasswordEncoder.encode(joinDTO.getPassword()))
 				.phoneNum(joinDTO.getPhoneNum())
-				.socialNum(joinDTO.getSocialNum1()+joinDTO.getSocialNum2())
 				.membership("일반 회원")
 				.role(Role.USER)
 				.build();
@@ -214,8 +213,41 @@ public class MemberServiceImpl implements MemberService{
 		memberRepository.save(member);
 		return "Success";
 	}
-	
-	// 비밀번호 찾기
+		//현재 사용중인 사용자 정보 가져오기
+		public Member getCurrentUser(Principal principal) {
+		    if (principal != null) {
+		        String username = principal.getName();
+		        return memberRepository.findByUsername(username);
+		    }
+		    return null;
+		}
+		
+		// 아이디 찾기
+		@Override
+		public Map<String, Object> findId(JoinDTO joinDTO) {
+			// TODO Auto-generated method stub
+			Map<String, Object> map = new HashMap<>();
+			try {
+				Member findMember;
+				if(joinDTO.getEmail().equals("")) { 
+					// 전화번호로 찾기
+					findMember = memberRepository.findByMemberNameAndPhoneNum(joinDTO.getMemberName(),joinDTO.getPhoneNum());
+				} else {
+					// 이메일로 찾기
+					findMember = memberRepository.findByMemberNameAndEmail(joinDTO.getMemberName(),joinDTO.getEmail());
+				}
+				map.put("username", findMember.getUsername());
+				map.put("createDate", findMember.getCreateDate());
+				map.put("result", "Success");
+				return map;
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			map.put("result", "Failure");
+			return map;
+		}
+		// 비밀번호 찾기
 		@Override
 		public Map<String, Object> findPwd(JoinDTO joinDTO) {
 			// TODO Auto-generated method stub
@@ -254,19 +286,11 @@ public class MemberServiceImpl implements MemberService{
 				return "Equal Password";
 			}
 			if(!joinDTO.getPassword().equals("")) { 
+				System.out.println("설마?????");
 				member.setPassword(bCryptPasswordEncoder.encode(joinDTO.getPassword()));
 			}
 			memberRepository.save(member);
 			return "Success";
-		}
-		
-		//현재 사용중인 사용자 정보 가져오기
-		public Member getCurrentUser(Principal principal) {
-		    if (principal != null) {
-		        String username = principal.getName();
-		        return memberRepository.findByUsername(username);
-		    }
-		    return null;
 		}
 		
 	
