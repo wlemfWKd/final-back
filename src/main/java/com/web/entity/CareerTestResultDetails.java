@@ -1,4 +1,4 @@
-package com.web.domain;
+package com.web.entity;
 
 public class CareerTestResultDetails {
     private long inspctSeq;

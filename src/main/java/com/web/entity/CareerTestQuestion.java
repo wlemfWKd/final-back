@@ -1,4 +1,4 @@
-package com.web.domain;
+package com.web.entity;
 
 import java.util.List;
 

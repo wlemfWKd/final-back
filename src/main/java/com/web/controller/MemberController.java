@@ -76,17 +76,19 @@ public class MemberController {
 	}
 	
 
+	// 필요할 때 토큰 넘겨서 username(아이디)로 멤버 정보 불러오기
 	@PostMapping("/getIdRole")
     public Map<String, Object> getCurrentMember(@RequestHeader(name = HttpHeaders.AUTHORIZATION, required = false) String token) {
 		Map<String, Object> map = new HashMap<>();
         if (token != null && token.startsWith("Bearer ")) {
             String jwtToken = token.substring(7);
             
-
+            // 토큰을 이용해 사용자 정보 추출
+            // 권한만 확인
             Role role = jwtUtil.getRole(jwtToken);
             map.put("Role", role);
             
-
+            // 아이디로 멤버 정보 전체 반환
             String username = jwtUtil.getUsername(jwtToken);
             Member member = memberService.getMemberInfo(username);
             if(member != null) {
@@ -136,6 +138,14 @@ public class MemberController {
 			// 멤버넘버로 찾자
 			String res = memberService.editMemberInfo(joinDTO);
 			return res;
+		}
+		
+		// Id 찾기
+		@PostMapping("/findId")
+		public Map<String, Object> findId(@RequestBody JoinDTO joinDTO) {
+			System.out.println(joinDTO);
+			Map<String, Object> resultMap = memberService.findId(joinDTO);
+			return resultMap;
 		}
 		
 		// Pwd 찾기 모달 띄우기 

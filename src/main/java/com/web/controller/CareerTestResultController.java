@@ -4,8 +4,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.web.domain.CareerTestResult;
-import com.web.domain.CareerTestResultRequest;
+import com.web.entity.CareerTestResult;
+import com.web.entity.CareerTestResultRequest;
 
 @RestController
 public class CareerTestResultController {
