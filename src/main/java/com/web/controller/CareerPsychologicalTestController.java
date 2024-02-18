@@ -1,12 +1,13 @@
 package com.web.controller;
 
-import com.web.domain.CareerTestQuestion;
-import com.web.domain.CareerTestAnswer;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.web.entity.CareerTestAnswer;
+import com.web.entity.CareerTestQuestion;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;

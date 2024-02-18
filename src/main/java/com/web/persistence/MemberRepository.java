@@ -24,6 +24,12 @@ public interface MemberRepository extends JpaRepository<Member, Long>{
 	
 	Member findByPhoneNum(String data);
 	
+	
+	// 아이디 찾기 - 전화번호로 찾기
+	Member findByMemberNameAndPhoneNum(String memberName, String phoneNum);
+	// 아이디 찾기 - 이메일로 찾기
+	Member findByMemberNameAndEmail(String memberName, String email);
+	
 	// 비밀번호 찾기 - 전화번호로 찾기
 	Optional<Member> findByUsernameAndMemberNameAndPhoneNum(String username, String memberName, String phoneNum);
 	// 비밀번호 찾기 - 이메일로 찾기
