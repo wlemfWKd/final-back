@@ -1,26 +1,26 @@
 package com.web.service;
 
-import java.io.File;
 import java.security.Principal;
 import java.security.SecureRandom;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
-import javax.activation.DataHandler;
-import javax.activation.DataSource;
-import javax.activation.FileDataSource;
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.web.domain.CheckMemberEmail;
 import com.web.domain.JoinDTO;
@@ -37,6 +37,10 @@ public class MemberServiceImpl implements MemberService{
 	
 	@Autowired
 	private JavaMailSender javaMailSender;
+	
+	@Autowired
+    private BCryptPasswordEncoder passwordEncoder;
+	
 	
 	private static final String CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
 
@@ -282,16 +286,32 @@ public class MemberServiceImpl implements MemberService{
 			boolean checkSamePassword = bCryptPasswordEncoder.matches(joinDTO.getPassword(), member.getPassword());
 			System.out.println(checkSamePassword);
 			if(checkSamePassword) {
-				System.out.println("진짜로");
 				return "Equal Password";
 			}
 			if(!joinDTO.getPassword().equals("")) { 
-				System.out.println("설마?????");
 				member.setPassword(bCryptPasswordEncoder.encode(joinDTO.getPassword()));
 			}
 			memberRepository.save(member);
 			return "Success";
 		}
 		
-	
+		@Override
+		@Transactional
+		public Page<Member> getMemberList(Pageable pageable) {
+			Page<Member> member =  memberRepository.findAll(pageable);
+			return member;
+		}
+		
+		
+		   // 회원을 삭제하는 메서드
+	    public void deleteMemberById(Long memberNum) {
+	        Optional<Member> optionalMember = memberRepository.findById(memberNum);
+	        if (optionalMember.isPresent()) {
+	            Member member = optionalMember.get();
+	            memberRepository.delete(member);
+	        } else {
+	            throw new NoSuchElementException("회원이 존재하지 않습니다. memberId: " + memberNum);
+	        }
+	    }
+	    
 }
