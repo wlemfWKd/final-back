@@ -3,6 +3,9 @@ package com.web.service;
 import java.security.Principal;
 import java.util.Map;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
 import com.web.domain.JoinDTO;
 import com.web.domain.Member;
 
@@ -31,5 +34,11 @@ public interface MemberService {
 
 	//현재 사용중인 사용자 정보 가져오기
 	public Member getCurrentUser(Principal principal);
+	
+	public Page<Member> getMemberList(Pageable pageable);
+	
+	public void deleteMemberById(Long memberNum);
+	
+	
 	
 }
