@@ -19,7 +19,7 @@ import lombok.ToString;
 @Builder
 @Entity
 @Table(name = "KYOBOCRAWL")
-public class KyoboBookCrawl {
+public class KyoboBookCrawl implements TotalBookCrawl {
 	
 	@Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "kyobo_seq_generator")

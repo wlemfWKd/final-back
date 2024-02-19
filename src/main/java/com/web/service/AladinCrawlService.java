@@ -40,9 +40,9 @@ public class AladinCrawlService {
 	}
 
 	// 페이지 번호에 따라 검색 URL을 생성하는 메소드 수정
-	public String generateSearchUrl(int page) {
+	public String generateSearchUrl(int page, String jmfldnm) {
 		try {
-			String searchQuery = "정보처리기사";
+			String searchQuery = jmfldnm;
 			String encodedQuery = URLEncoder.encode(searchQuery, StandardCharsets.UTF_8.toString());
 			return "https://www.aladin.co.kr/search/wsearchresult.aspx?SearchTarget=All&SearchWord=" + encodedQuery
 					+ "&page=" + page;
@@ -52,13 +52,13 @@ public class AladinCrawlService {
 		}
 	}
 
-	//@PostConstruct
-	public void getBookDates() throws IOException {
+	
+	public List<AladinBookCrawl> getBooksFromCrawl(String jmfldnm) throws IOException {
 		List<AladinBookCrawl> bookCrawls = new ArrayList<>();
 		int maxPages = 4;
 
 		for (int page = 1; page <= maxPages; page++) {
-			String bookDataUrl = generateSearchUrl(page);
+			String bookDataUrl = generateSearchUrl(page, jmfldnm);
 			Document doc = Jsoup.connect(bookDataUrl).get();
 
 			String cssSelector = "div#Search3_Result div.ss_book_box";
@@ -73,7 +73,7 @@ public class AladinCrawlService {
 				// 책 정보
 				String bookName = bookElement
 						.select("table tbody tr td table tbody tr td div.ss_book_list ul li a.bo3 b").text();
-				System.out.println(bookName);
+				System.out.println("알라딘 : " + bookName);
 
 				// 가격 정보
 				String bookPrice = bookElement
@@ -112,8 +112,80 @@ public class AladinCrawlService {
 				bookCrawls.add(bookCrawl);
 			}
 		}
+		return bookCrawls;
+	}
+	//========================================================
+	public String SearchUrl(int page, String search) {
+		try {
+			String searchQuery = search;
+			String encodedQuery = URLEncoder.encode(searchQuery, StandardCharsets.UTF_8.toString());
+			return "https://www.aladin.co.kr/search/wsearchresult.aspx?SearchTarget=All&SearchWord=" + encodedQuery
+					+ "&page=" + page;
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+	public List<AladinBookCrawl> getSearchBooksFromCrawl(String search) throws IOException {
+		List<AladinBookCrawl> bookCrawls = new ArrayList<>();
+		int maxPages = 4;
 
-		saveAladinBookCrawls(bookCrawls);
+		for (int page = 1; page <= maxPages; page++) {
+			String bookDataUrl = SearchUrl(page, search);
+			Document doc = Jsoup.connect(bookDataUrl).get();
+
+			String cssSelector = "div#Search3_Result div.ss_book_box";
+
+			if (doc.select(cssSelector).isEmpty()) {
+				System.out.println("========데이터 없음 ======");
+			}
+
+			Elements bookElements = doc.select(cssSelector);
+
+			for (Element bookElement : bookElements) {
+				// 책 정보
+				String bookName = bookElement
+						.select("table tbody tr td table tbody tr td div.ss_book_list ul li a.bo3 b").text();
+				System.out.println("알라딘 : " + bookName);
+
+				// 가격 정보
+				String bookPrice = bookElement
+						.select("table tbody tr td table tbody tr td div.ss_book_list ul li span.ss_p2 b span").text();
+
+				// 이미지 정보
+				Elements imageElementsFirst = bookElement.select(
+						"table tbody tr td table tbody tr td div.cover_area a div.flipcover_out div.flipcover_in.lcover_none img[src$=.jpg]");
+				String imageNameFirst = imageElementsFirst.attr("src");
+
+				Elements imageElementsSecond = bookElement.select(
+						"table tbody tr td table tbody tr td div.cover_area a div.flipcover_out div.flipcover_in:not(.lcover_none) img.front_cover[src$=.jpg]");
+				String imageNameSecond = imageElementsSecond.attr("src");
+				
+				Elements imageElementsThird = bookElement.select(
+						"table tbody tr td table tbody tr td div.cover_area_other a img[src$=.jpg]");
+				String imageNameThird = imageElementsThird.attr("src");
+				
+				
+				String imageName = "";
+				// 이미지가 있는 경우에만 값을 할당
+				if (!imageElementsFirst.isEmpty()) {
+					imageName = imageNameFirst;
+				} else if (!imageElementsSecond.isEmpty()) {
+					imageName = imageNameSecond;
+				} else if (!imageNameThird.isEmpty()) {
+					imageName = imageNameThird;
+				}
+
+				AladinBookCrawl bookCrawl = AladinBookCrawl.builder()
+						.bookName(bookName)
+						.bookPrice(bookPrice)
+						.imageName(imageName)
+						.build();
+
+				bookCrawls.add(bookCrawl);
+			}
+		}
+		return bookCrawls;
 	}
 
 	// 전체 출력해줄 메서드
