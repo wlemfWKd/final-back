@@ -21,7 +21,7 @@ import lombok.ToString;
 @Builder
 @Entity
 @Table(name = "YES24CRAWL")
-public class Yes24BookCrawl {                                                                            
+public class Yes24BookCrawl implements TotalBookCrawl {                                                                            
 
 	@Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "yes24_seq_generator")
@@ -31,7 +31,7 @@ public class Yes24BookCrawl {
 	@Column(name = "book_name", nullable =true)
 	private String bookName;
 
-	private int bookPrice;
+	private String bookPrice;
 	private String viewDetail; //상세보기 링
 	private String imageName;
 	
@@ -42,7 +42,7 @@ public class Yes24BookCrawl {
 	public Yes24BookCrawl() {
 	}
 
-	public Yes24BookCrawl(Long id, String bookName, int bookPrice, String viewDetail, String imageName, String defaultColumn) {
+	public Yes24BookCrawl(Long id, String bookName, String bookPrice, String viewDetail, String imageName, String defaultColumn) {
 		super();
 		this.id = id;
 		this.bookName = bookName;

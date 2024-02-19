@@ -19,7 +19,7 @@ import lombok.ToString;
 @Builder
 @Entity
 @Table(name = "ALADINCRAWL")
-public class AladinBookCrawl {
+public class AladinBookCrawl implements TotalBookCrawl {
 	
 	@Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "aladin_seq_generator")
