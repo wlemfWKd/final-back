@@ -23,7 +23,7 @@ public class AdminController {
 	private MemberService ms;
 	
 	@GetMapping("/memberlist")
-	public Page<Member> memberlist(@PageableDefault(size = 10) Pageable pageable) {
+	public Page<Member> memberlist(@PageableDefault(size = 20) Pageable pageable) {
 	    return ms.getMemberList(pageable);
 	}
 	
