@@ -44,8 +44,7 @@ public class TokenService {
 		
 		Member member = mRepo.findByEmail(memberE);
 		
-		
-		System.out.println(member);
+		//System.out.println("넌 어디서 나오는 얜데??"+member);
 		return member;
 	}
 	

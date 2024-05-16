@@ -37,11 +37,11 @@ public class Reply {
 	@JoinColumn(name = "BOARD_SEQ")
 	private Long boardSeq; // 글번호
 	
-	@Column(name = "CONTENT",nullable = false)
-	private String content;
+	@Column(name = "REPLY_CONTENT",nullable = false)
+	private String replyContent;
 	
-	@Column(name = "NICKNAME")
-	private String nickName;
+	@Column(updatable=false, name = "REPLY_WRITER")
+	private String replyWriter; // 사용자id
 	
 	@Column(name = "REPLY_DATE", insertable = false, updatable = false, columnDefinition = "date default sysdate")
 	private Date replyDate; // 작성날짜(SYSDATE)

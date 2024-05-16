@@ -39,13 +39,13 @@ public class BoardServiceImpl implements BoardService, FolderPathREPO {
 
    // 게시글 글 쓰기 
    @Override
-   public void board_write(String title,String content,MultipartFile file,String memberId,String comment) {
+   public void board_write(String title,String content,MultipartFile file,String memberId,String writer) {
       Board board = new Board();
-      System.out.println("=====게시글 제목========"+title);
+      System.out.println("====================게시글 제목================");
       board.setBoardTitle(title);
       board.setBoardContents(content);
       board.setBoardUsername(memberId);
-      board.setBoardComment(comment);
+      board.setBoardWriter(writer);
       if(memberId.equals("admin123")) {
          board.setDefaultValue("notice");
       } else {

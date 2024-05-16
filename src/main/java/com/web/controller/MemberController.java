@@ -110,7 +110,7 @@ public class MemberController {
 			Member currentMember = tokenService.getMemberByMemberNum(token);
 			map.put("result", "Success");
 			map.put("currentMember", currentMember);
-			System.out.println("성공");
+			System.out.println("성공1");
 		} else {
 			map.put("result", "Failure");
 			System.out.println("실패");

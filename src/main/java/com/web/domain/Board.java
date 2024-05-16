@@ -1,6 +1,7 @@
 package com.web.domain;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -32,7 +33,7 @@ public class Board {
    private Long boardSeq; // 글번호
    
    @Column(updatable = false, name="BoardUsername")
-   private String boardUsername; // 작성자(사용자)
+   private String boardUsername; // 작성자(사용자id)
    
    @Column(name = "BOARD_TITLE")
    private String boardTitle; // 제목
@@ -43,14 +44,17 @@ public class Board {
    @Column(name = "BOARD_DATE",insertable = false, updatable = false, columnDefinition = "date default sysdate")
    private Date boardDate; // 작성날짜(SYSDATE)
    
-   @Column(name = "BOARD_COMMENT")
-   private String boardComment; // 댓글
+   @Column(name = "BOARD_WRITER")
+   private String boardWriter; // 이름
    
    @Column(name = "BOARD_FILE")
-   private String file; 
+   private String file;
+   
+   @Column(name = "BOARD_CHOICE")
+   private Long boardChoice;
    
    @Column(name = "DEFAULT_VALUE")
    private String defaultValue;
-   
+
    
 }

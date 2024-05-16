@@ -26,6 +26,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.web.domain.Board;
 import com.web.domain.Member;
+import com.web.domain.Reply;
 import com.web.persistence.BoardRepository;
 import com.web.service.BoardService;
 import com.web.service.FolderPathREPO;
@@ -57,9 +58,9 @@ public class BoardController {
        @RequestParam("content") String content,
        @RequestParam(value = "file", required = false) MultipartFile file,
        @RequestParam("memberId") String memberId,
-       @RequestParam("comment") String comment
+       @RequestParam("writer") String writer
      ) {
-      boardService.board_write(title,content,file,memberId,comment);
+      boardService.board_write(title,content,file,memberId,writer);
 
        return "Success"; // 또는 다른 응답 메시지
      }
@@ -85,7 +86,7 @@ public class BoardController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
    }
-   
+
    
    //----------------------------------------------------------
    // **게시글 수정 시 정보 데아터 & seq 저장 + 페이징처리 
@@ -143,8 +144,79 @@ public class BoardController {
     *    댓글 Controller
     ***/
    //----------------------------------------------------------
-
    
+   @GetMapping("/getComments/{boardSeq}")
+   public ResponseEntity<List<Reply>> getComments(@PathVariable Long boardSeq) {
+       // 게시글 번호에 해당하는 댓글 목록을 가져옴
+       List<Reply> comments = replyService.getCommentsByBoardSeq(boardSeq);
+       if (comments != null && !comments.isEmpty()) {
+           return new ResponseEntity<>(comments, HttpStatus.OK);
+       } else {
+           return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+       }
+   }
+   
+//	// 댓글등록
+//	@PostMapping("/replyForm")
+//	public String replyWrite(Reply reply, Long boardSeq, RedirectAttributes r) {
+//	    // 작성자 정보 추출
+//	    String replyWriter = reply.getReplyWriter();
+//	    System.out.println("##################BoardSeq###############:" + boardSeq);
+//	    System.out.println("##################Received Board Writer############:" +replyWriter);
+//	    
+//	    // 리다이렉트 및 필요한 파라미터 전달
+//	    r.addAttribute("boardSeq", reply.getBoardSeq());
+//	    r.addAttribute("replyWriter", reply.getReplyWriter());
+//	    
+//	    // 댓글 저장
+//	    replyService.replyWrite(reply, boardSeq, replyWriter);
+//	    return "redirect:boardView";
+//	}
+   
+	// 댓글등록
+	@PostMapping("/replyForm")
+	public String replyWrite(
+			@RequestParam("boardSeq") Long boardSeq,
+			@RequestParam("replyContent") String replyContent,
+			@RequestParam("replyWriter") String replyWriter
+			) {
+		replyService.replyWrite(boardSeq, replyContent, replyWriter);
+		
+	    System.out.println("##################BoardSeq###############:" + boardSeq);
+	    System.out.println("##################Received Board Writer############:" +replyWriter);
+		return "아아저장테스트 아";
+	}
+   
+   
+   //------------------------------------------------------------
+   
+   //댓글 수정 폼 띄우기
+   @GetMapping("/replyModify")
+   public String replyModify(Long replySeq, Model model) {
+	   replyService.replyModify(replySeq, model);
+	   return "board/replyModify";
+   }
+
+   //-------------------------------------------------------------
+   
+   //댓글 수정
+   @PostMapping("/replyModifyForm")
+   public String replyModifyForm(Reply reply, RedirectAttributes r) {
+	   replyService.replyModify2(reply);
+	   r.addAttribute("replySeq", reply.getReplySeq());
+	   return "redirect:replyModify";
+   }
+   
+  //-------------------------------------------------------------
+   
+  //댓글 삭제
+   @GetMapping("/replyDelete")
+   public String replyDelete(Long replySeq, RedirectAttributes r, Long boardChoice, String page) {
+	   replyService.replyDelete(replySeq, r);
+	   r.addAttribute("boardChoice", boardChoice);
+	   r.addAttribute("page", page);
+	   return "redirect:boardView";
+   }
    
    
 }

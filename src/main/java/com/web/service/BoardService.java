@@ -25,8 +25,6 @@ public interface BoardService {
    // 게시글 글 수정 시 정보데이터 & seq 같이 보내기 + 페이징처리 
    public void getBoard(Long boardSeq,Model model);
    
-   
-   
    // 게시글 글 수정 
    public void board_update(MultipartHttpServletRequest mul);
    
@@ -34,3 +32,5 @@ public interface BoardService {
    public void board_delete(Board board);
    
 }
+
+
