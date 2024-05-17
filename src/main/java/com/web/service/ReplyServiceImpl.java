@@ -76,19 +76,30 @@ public class ReplyServiceImpl implements ReplyService{
 		}
 	}
 	// 댓글 삭제
+//	@Override
+//	public void replyDelete(Long replySeq, RedirectAttributes ra) {
+//		// 댓글 seq로 조회 후 댓글 객체 삭제
+//		Optional<Reply> optional = replyRepo.findById(replySeq);
+//		Reply reply = new Reply();
+//		if(optional != null) {
+//			reply = optional.get();
+//		} else {
+//			reply = null;
+//		}
+//		ra.addAttribute("boardSeq", reply.getBoardSeq());
+//		replyRepo.deleteById(replySeq);
+//	}
+	
 	@Override
-	public void replyDelete(Long replySeq, RedirectAttributes ra) {
-		// 댓글 seq로 조회 후 댓글 객체 삭제
-		Optional<Reply> optional = replyRepo.findById(replySeq);
-		Reply reply = new Reply();
-		if(optional != null) {
-			reply = optional.get();
-		} else {
-			reply = null;
-		}
-		ra.addAttribute("boardSeq", reply.getBoardSeq());
-		replyRepo.deleteById(replySeq);
-	}
+    public void replyDelete(Long replySeq, RedirectAttributes ra) {
+        // 댓글 seq로 조회 후 댓글 객체 삭제
+        Optional<Reply> optional = replyRepo.findById(replySeq);
+        if (optional.isPresent()) {
+            Reply reply = optional.get();
+            ra.addAttribute("boardSeq", reply.getBoardSeq());
+            replyRepo.deleteById(replySeq);
+        }
+    }
 
 	
 }

@@ -184,7 +184,7 @@ public class BoardController {
 		
 	    System.out.println("##################BoardSeq###############:" + boardSeq);
 	    System.out.println("##################Received Board Writer############:" +replyWriter);
-		return "아아저장테스트 아";
+		return "Success";
 	}
    
    
@@ -211,12 +211,12 @@ public class BoardController {
    
   //댓글 삭제
    @GetMapping("/replyDelete")
-   public String replyDelete(Long replySeq, RedirectAttributes r, Long boardChoice, String page) {
-	   replyService.replyDelete(replySeq, r);
-	   r.addAttribute("boardChoice", boardChoice);
-	   r.addAttribute("page", page);
-	   return "redirect:boardView";
+   public String replyDelete(Long replySeq, RedirectAttributes r) {
+       replyService.replyDelete(replySeq, r);
+       return "redirect:/boardView";
    }
    
+   
+
    
 }

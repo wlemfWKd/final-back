@@ -26,9 +26,14 @@ public interface ReplyService {
 	// 댓글 삭제 
 	public void replyDelete(Long replySeq, RedirectAttributes ra);
 	
+//	public void replyDelete(Reply reply);
+//	public Reply getReplyBySeq(Long replySeq);
+	
 	// 댓글 수정 
 	public void replyModify2(Reply reply);
 
 	public List<Reply> getCommentsByBoardSeq(Long boardSeq);
+
+	
 
 }
