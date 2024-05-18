@@ -5,6 +5,7 @@ import java.security.Principal;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
@@ -28,6 +29,7 @@ import com.web.domain.Board;
 import com.web.domain.Member;
 import com.web.domain.Reply;
 import com.web.persistence.BoardRepository;
+import com.web.persistence.ReplyRepository;
 import com.web.service.BoardService;
 import com.web.service.FolderPathREPO;
 import com.web.service.MemberService;
@@ -48,6 +50,9 @@ public class BoardController {
    
    @Autowired
    private BoardRepository BoardRepo;
+   
+   @Autowired
+   private ReplyRepository replyRepo;
 
    //----------------------------------------------------------
    // 게시글 등록
@@ -190,22 +195,54 @@ public class BoardController {
    
    //------------------------------------------------------------
    
-   //댓글 수정 폼 띄우기
-   @GetMapping("/replyModify")
-   public String replyModify(Long replySeq, Model model) {
-	   replyService.replyModify(replySeq, model);
-	   return "board/replyModify";
-   }
+//   //댓글 수정 폼 띄우기
+//   @GetMapping("/replyModify")
+//   public String replyModify(Long replySeq, Model model) {
+//	   replyService.replyModify(replySeq, model);
+//	   return "board/replyModify";
+//   }
+	
+	// 댓글 수정 폼 띄우기
+	@GetMapping("/replyModify")
+	public String replyModify(Long replySeq, Model model) {
+	    Optional<Reply> optionalReply = replyRepo.findById(replySeq);
+	    if (optionalReply.isPresent()) {
+	        Reply reply = optionalReply.get();
+	        model.addAttribute("reply", reply);
+	        return "board/replyModify"; // 수정 폼을 나타내는 view로 이동
+	    } else {
+	        // 댓글이 존재하지 않는 경우 처리
+	        return "error"; // 에러 페이지로 리다이렉트 또는 에러 처리
+	    }
+	}
 
    //-------------------------------------------------------------
+	
+	// 댓글 수정
+	@PostMapping("/replyModifyForm")
+	public String replyModifyForm(Reply modifiedReply) {
+	    // 이전 댓글 객체를 조회하여 boardSeq 값을 가져옴
+	    Reply originalReply = replyRepo.findById(modifiedReply.getReplySeq()).orElse(null);
+	    
+	    // 이전 댓글 객체의 boardSeq 값을 수정된 댓글 객체에 설정
+	    if (originalReply != null) {
+	        modifiedReply.setBoardSeq(originalReply.getBoardSeq());
+	    }
+	    
+	    // 수정된 댓글을 저장
+	    replyRepo.save(modifiedReply);
+	    
+	    return "redirect:/board/replyModify?replySeq=" + modifiedReply.getReplySeq();
+	}
    
-   //댓글 수정
-   @PostMapping("/replyModifyForm")
-   public String replyModifyForm(Reply reply, RedirectAttributes r) {
-	   replyService.replyModify2(reply);
-	   r.addAttribute("replySeq", reply.getReplySeq());
-	   return "redirect:replyModify";
-   }
+//   //댓글 수정
+//   @PostMapping("/replyModifyForm")
+//   public String replyModifyForm(Reply reply, RedirectAttributes r) {
+//	   replyService.replyModify2(reply);
+//	   r.addAttribute("replySeq", reply.getReplySeq());
+//	   return "redirect:replyModify";
+//   }
+
    
   //-------------------------------------------------------------
    

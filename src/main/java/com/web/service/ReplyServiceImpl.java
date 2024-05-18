@@ -41,6 +41,7 @@ public class ReplyServiceImpl implements ReplyService{
 //        replyRepo.save(reply);
 //    }
     
+ // 댓글 등록
     @Override
     public void replyWrite(Long boardSeq, String replyContent, String replyWriter) {
     	Reply reply = new Reply();
@@ -52,29 +53,30 @@ public class ReplyServiceImpl implements ReplyService{
     	replyRepo.save(reply);
     }
     
-	// 댓글 수정 폼에 정보 띄우기
-	@Override
-	public void replyModify(Long replySeq, Model model) {
-		// 댓글 번호로 조회하여 폼에 띄우기
-		Reply reply = replyRepo.findById(replySeq).get();
-		model.addAttribute(reply);
-	}
+ // 댓글 수정 폼에 정보 띄우기
+    @Override
+    public void replyModify(Long replySeq, Model model) {
+        // 댓글 번호로 조회하여 폼에 띄우기
+        Reply reply = replyRepo.findById(replySeq).orElse(null);
+        model.addAttribute("reply", reply); // "reply"라는 이름으로 reply 객체를 model에 추가
+    }
 	
-	// 댓글 수정 완료시 객체정보를 넘겨서 수정
-	@Override
-	public void replyModify2(Reply reply) {
-		String reqplyContent = reply.getReplyContent();
-		// replySeq에 맞게 window 창이 열리고 입력했었던 데이터들이 입력되어있음
-		Optional<Reply> optional = replyRepo.findById(reply.getReplySeq());
-		if (optional != null) {
-			// 수정한 내용 담아서 저장
-			reply = optional.get();
-			reply.setReplyContent(reqplyContent);
-			replyRepo.save(reply);
-		} else {
-			System.out.println("수정 실패");
-		}
-	}
+ // 댓글 수정 완료시 객체정보를 넘겨서 수정
+    @Override
+    public void replyModify2(Reply reply) {
+        // reply 객체로부터 수정할 내용 가져오기
+        String reqplyContent = reply.getReplyContent();
+        
+        // replySeq에 맞게 댓글을 조회하여 수정하기
+        Optional<Reply> optional = replyRepo.findById(reply.getReplySeq());
+        if (optional.isPresent()) {
+            Reply existingReply = optional.get();
+            existingReply.setReplyContent(reqplyContent);
+            replyRepo.save(existingReply); // 수정된 댓글 저장
+        } else {
+            System.out.println("수정 실패: 해당 댓글을 찾을 수 없습니다.");
+        }
+    }
 	// 댓글 삭제
 //	@Override
 //	public void replyDelete(Long replySeq, RedirectAttributes ra) {
@@ -90,6 +92,7 @@ public class ReplyServiceImpl implements ReplyService{
 //		replyRepo.deleteById(replySeq);
 //	}
 	
+	// 댓글 삭제
 	@Override
     public void replyDelete(Long replySeq, RedirectAttributes ra) {
         // 댓글 seq로 조회 후 댓글 객체 삭제
