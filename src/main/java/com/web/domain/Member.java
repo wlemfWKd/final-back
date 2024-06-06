@@ -47,7 +47,7 @@ public class Member{
 	private String email; 		//회원 이메일
 	private String phoneNum; 	//회원 전화번호
 	private String membership; 	//회원 등급
-	private String warning;		//경고
+	//private String warning;		//경고
 	
     @Enumerated(EnumType.STRING)
     private Role role;

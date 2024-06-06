@@ -132,7 +132,7 @@ public class BoardController {
    @PostMapping("/boardUpdate")
    public String boardUpdate(MultipartHttpServletRequest mul) {
       boardService.board_update(mul);
-      return "redirect:community";
+      return "redirect:board";
    }
    
    //----------------------------------------------------------
@@ -142,7 +142,7 @@ public class BoardController {
    public String board_delete(@PathVariable Long boardSeq) {
       Board board = boardService.getBoardBySeq(boardSeq);
       boardService.board_delete(board);
-      return "redirect:community";
+      return "redirect:board";
    }
    
    /***
