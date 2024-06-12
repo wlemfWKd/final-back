@@ -68,6 +68,6 @@
 ## 💻화면
 
 fornt 주소: <https://github.com/wlemfWKd/final-front/tree/develop><br>
-사이트 주소: <http://3.35.166.71:3000/>
+사이트 주소: <http://certificatezip.kro.kr/>
 
 
